@@ -1,5 +1,5 @@
 # app install dir
-$installdir= "D:\chocolatey_installs"
+$installdir= "D:\chocolatey"
 # apps to install
 $apps=  # drivers
         "amd-ryzen-chipset",
@@ -32,12 +32,16 @@ $apps=  # drivers
         "git",
         "ruby",
         "lua",
-        "nodejs", 
+        "nodejs-lts", 
         "go",
         # misc
         "shotcut",
         "spotify",
         "steam-client"
+
+# Battlenet install path
+$BNET_INSTALL_PATH="D:\Program Files (x86)\Battle.net"
+$BNET_INSTALL_URL="https://us.battle.net/download/getInstaller?os=win&installer=Battle.net-Setup.exe"
 
 # run as admin
 if([Security.Principal.WindowsIdentity]::GetCurrent().Groups -contains 'S-1-5-32-544') { 
@@ -48,7 +52,7 @@ if([Security.Principal.WindowsIdentity]::GetCurrent().Groups -contains 'S-1-5-32
 # remove chocolatey directory if it exists
 Remove-Item 'C:\ProgramData\chocolatey' -Recurse
 # make link for chocolatey install dir
-New-Item -ItemType SymbolicLink -Path "C:\ProgramData\chocolatey" -Target "D:\ProgramData\chocolatey"
+New-Item -ItemType SymbolicLink -Path "C:\ProgramData\chocolatey" -Target $installdir
 # install chocolatey
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
@@ -58,8 +62,8 @@ Foreach ($app in $apps) {
 }
 
 # install battle.net client
-curl -k "https://us.battle.net/download/getInstaller?os=win&installer=Battle.net-Setup.exe" --output Battle.net-Setup.exe
-./Battle.net-Setup.exe --lang=enUS --installpath="D:\Program Files (x86)\Battle.net"
+curl -k $BNET_INSTALL_URL --output Battle.net-Setup.exe
+./Battle.net-Setup.exe --lang=enUS --installpath=$BNET_INSTALL_PATH
 
 ## Uninstall BNET
 #
