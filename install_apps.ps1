@@ -1,5 +1,9 @@
 # run as admin
+if([Security.Principal.WindowsIdentity]::GetCurrent().Groups -contains 'S-1-5-32-544') { 
+    Write-Host 'Please re-run script as administrator...'
+    Exit 1
 
+}
 # remove chocolatey directory if it exists
 Remove-Item 'C:\ProgramData\chocolatey' -Recurse
 # make link for chocolatey install dir
@@ -9,7 +13,7 @@ Remove-Item 'C:\ProgramData\chocolatey' -Recurse
 New-Item -ItemType SymbolicLink -Path "C:\ProgramData\chocolatey" -Target "D:\ProgramData\chocolatey"
 
 # install chocolatey
-Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
 # app install dir
 $installdir= "D:\chocolatey_installs"
