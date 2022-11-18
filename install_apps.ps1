@@ -37,7 +37,8 @@ $apps=  # drivers
         # misc
         "shotcut",
         "spotify",
-        "steam-client"
+        "steam-client",
+        "awscli"
 
 # Battlenet install path
 $BNET_INSTALL_PATH="D:\Program Files (x86)\Battle.net"
